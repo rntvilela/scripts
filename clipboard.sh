@@ -10,6 +10,6 @@ usage() {
 
 case $1 in
     -w) echo "$(xclip -o -sel c)" >> /tmp/tmpclip.txt ;;
-    -r) cat /tmp/tmpclip.txt | dmenu -l 30 | tr -d '\n' | xclip -sel c ;;
+    -r) cat /tmp/tmpclip.txt | dmenu -l 30 | tr -d "\n" | xclip -sel c ;;
     *) usage ;;
 esac
