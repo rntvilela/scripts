@@ -21,7 +21,7 @@ update_audio(){
     vol=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5}')
     state=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $6}')
 
-    [[ $vol = "0%" || $state = "off" ]] && audio=$(echo " $vol") || audio=$(echo " $vol")
+    [ $vol = "0%" ] || [ $state = "off" ] && audio=" $vol" || audio=" $vol"
 }
 
 update_battery() {
@@ -41,8 +41,8 @@ update_status(){
 s=0
 
 update_audio && update_brightness && update_ram && update_clock && update_battery && update_status
-
-update_cpu && update_weather && update_status
+update_cpu && update_status
+update_weather && update_status
 
 while true; do
     sleep 1
