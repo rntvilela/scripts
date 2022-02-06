@@ -4,7 +4,7 @@ usage() {
     echo "usage: ./clipboard.sh [option]"
     echo ""
     echo " -w write selection to tempclip.txt."
-    echo " -r read sekections from tempclip.txt."
+    echo " -r read selections from tempclip.txt."
     echo " -h to show this menu."
 }
 
