@@ -39,9 +39,10 @@ update_status(){
 }
 
 s=0
-update_audio && update_brightness && update_cpu && update_ram && update_clock && update_battery && update_status && sleep 1
 
-update_weather
+update_audio && update_brightness && update_ram && update_clock && update_battery && update_status
+
+update_cpu && update_weather && update_status
 
 while true; do
     sleep 1
