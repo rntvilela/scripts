@@ -16,13 +16,13 @@ image='feh'
 video='mpv'
 
 case $1 in
-    -p) arg="$(ls -a | egrep '.pdf' | dmenu -l 30)"
+    -p) arg="$(ls -a | egrep 'pdf' | dmenu -l 30)"
         [ ! -z "$arg" ] && nohup $pdfreader "$arg" >/dev/null & ;;
-    -t) arg="$(ls -a | egrep '.(md|txt)' | dmenu -l 30)"
+    -t) arg="$(ls -a | egrep 'md|txt' | dmenu -l 30)"
         [ ! -z "$arg" ] && $editor "$arg" ;;
-    -i) arg="$(ls -a | egrep '.(jpeg|jpg|png)' | dmenu -l 30)"
+    -i) arg="$(ls -a | egrep 'jpeg|jpg|png' | dmenu -l 30)"
         [ ! -z "$arg" ] && $image "$arg" ;;
-    -v) arg="$(ls -a | egrep '.(mkv|mp4|avi)' | dmenu -l 30)"
+    -v) arg="$(ls -a | egrep 'mkv|mp4|avi' | dmenu -l 30)"
         [ ! -z "$arg" ] && nohup $video "$arg" >/dev/null & ;;
     *) usage ;;
 esac
