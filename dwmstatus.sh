@@ -18,16 +18,15 @@ update_brightness(){
 }
 
 update_audio(){
-    vol=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5}')
-    state=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $6}')
+    audio=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5" "$6}')
 
-    [ $vol = "0%" ] || [ $state = "off" ] && audio=" $vol" || audio=" $vol"
+    [ ${audio% *} = "0%" ] || [ ${audio#* } = "off" ] && audio=" ${audio% *}" || audio=" ${audio% *}"
 }
 
 update_battery() {
-    battery_state=$(acpi | awk '{print $3}')
+    battery=$(acpi | tr -d ',' | awk '{print $3" "$4}')
 
-    [ $battery_state = "Discharging," ] && battery=$(acpi | awk '{gsub (",",""); print " "$4}') || battery=$(acpi | awk '{print " "$4}')
+    [ ${battery% *} = "Discharging" ] && battery=" ${battery#* }" || battery=" ${battery#* }"
 }
 
 update_clock(){
@@ -48,8 +47,7 @@ while true; do
     sleep 1
     s=$((s+=1))
     
-    update_audio
-    update_brightness
+    update_audio && update_brightness
     [ $((s%15)) = 0 ] && update_cpu && update_ram
     [ $((s%60)) = 0 ] && update_clock && update_battery 
     [ $s = 3600 ] && update_weather && s=0
