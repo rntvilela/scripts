@@ -4,9 +4,9 @@
 
 Agiliza o processo de commit.
 
-### clipbload.sh
+### clipboard.sh
 
-Leitura e escrita de conteúdo do clipboard em arquivo temporário.
+Leitura e escrita do conteúdo do clipboard em arquivo temporário.
 
 #### Requisitos
 
