@@ -14,19 +14,19 @@ update_ram(){
 }
 
 update_brightness(){
-    brightness=$(cat /sys/class/backlight/acpi_video0/brightness | awk '{print " " int($1*100/7) "%"}')
+    brightness=$(awk '{print " " int($1*100/7) "%"}' < /sys/class/backlight/acpi_video0/brightness)
 }
 
 update_audio(){
     audio=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5" "$6}')
 
-    [ ${audio% *} = "0%" ] || [ ${audio#* } = "off" ] && audio=" ${audio% *}" || audio=" ${audio% *}"
+    [ "${audio% *}" = "0%" ] || [ "${audio#* }" = "off" ] && audio=" ${audio% *}" || audio=" ${audio% *}"
 }
 
 update_battery() {
     battery=$(acpi | awk '{gsub (",",""); print $3" "$4}')
 
-    [ ${battery% *} = "Discharging" ] && battery=" ${battery#* }" || battery=" ${battery#* }"
+    [ "${battery% *}" = "Discharging" ] && battery=" ${battery#* }" || battery=" ${battery#* }"
 }
 
 update_clock(){
