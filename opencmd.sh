@@ -16,14 +16,14 @@ image='feh'
 video='mpv'
 
 case $1 in
-    -p) arg="$(ls -a *pdf 2>/dev/null | dmenu -l 30)"
-        [ -n "$arg" ] && nohup $pdfreader "$arg" >/dev/null & ;;
-    -t) arg="$(ls -a *md *txt 2>/dev/null | dmenu -l 30)"
+    -p) arg="$(ls *pdf 2>/dev/null | dmenu -l 30)"
+        [ -n "$arg" ] && nohup $pdfreader "$arg" >/dev/null 2>&1 & ;;
+    -t) arg="$(ls *md *txt 2>/dev/null | dmenu -l 30)"
         [ -n "$arg" ] && $editor "$arg" ;;
-    -i) arg="$(ls -a *jpeg *jpg *png 2>/dev/null | dmenu -l 30)"
-        [ -n "$arg" ] && $image "$arg" ;;
-    -v) arg="$(ls -a *mkv *mp4 *avi 2>/dev/null | dmenu -l 30)"
-        [ -n "$arg" ] && nohup $video "$arg" >/dev/null & ;;
+    -i) arg="$(ls *jpeg *jpg *png 2>/dev/null | dmenu -l 30)"
+        [ -n "$arg" ] && nohup $image "$arg" >/dev/null 2>&1 &;;
+    -v) arg="$(ls *mkv *mp4 *avi 2>/dev/null | dmenu -l 30)"
+        [ -n "$arg" ] && nohup $video "$arg" >/dev/null 2>&1 & ;;
     *) usage ;;
 esac
 
