@@ -29,7 +29,7 @@ update_clock(){
 }
 
 update_status(){
-        xsetroot -name " $cpu | $ram | $brightness | $audio | $battery | $clock"
+        xsetroot -name " $cpu | $ram | $audio | $brightness | $battery | $clock"
 }
 
 s=0

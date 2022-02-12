@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-    echo "usage: ./opencmd.sh [option]"
+    echo "usage: ./opencli.sh [option]"
     echo ""
     echo " -p to pdf file."
     echo " -t to text file."
