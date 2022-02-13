@@ -18,7 +18,7 @@ fi
 
 if [ -n "$episodio" ]
 then
-    mpv "https://animesonline.cc/$episodio"
+    mpv "https://animesonline.cc/$episodio/"
     if [ $? = 0 ]
     then
         echo -n "Você acabou de assistir: "
@@ -27,6 +27,6 @@ then
         echo -n "Falha ao executar com mpv, abrindo: "
         echo -n "$episodio " | tr '-' ' ' | sed 's/\<./\U&/g'
         echo "com $browser."
-        $browser "https://animesonline.cc/episodio/$episodio"
+        $browser "https://animesonline.cc/episodio/$episodio/"
     fi
 fi
