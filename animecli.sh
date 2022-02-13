@@ -12,7 +12,7 @@ then
     usage
 else
     anime=$(echo "$1" | tr ' ' '+')
-    anime_escolhido=$(curl -s https://animesonline.cc/search/$anime | grep -Eo "https:\/\/animesonline.cc\/anime\/[a-zA-Z0-9-]*/" | uniq | cut -c31- | dmenu -l 30)
+    anime_escolhido=$(curl -s https://animesonline.cc/search/"$anime" | grep -Eo "https:\/\/animesonline.cc\/anime\/[a-zA-Z0-9-]*/" | uniq | cut -c31- | dmenu -l 30)
     [ -n "$anime_escolhido" ] && episodio=$(curl -s "https://animesonline.cc/anime/$anime_escolhido" | grep -Eo "https:\/\/animesonline.cc\/episodio\/[a-zA-Z0-9-]*/" | uniq | cut -c34- | dmenu -l 30)
 fi
 
