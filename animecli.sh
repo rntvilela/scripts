@@ -18,7 +18,7 @@ fi
 
 [ -n "$episodio" ] && mpv "https://animesonline.cc/$episodio"
 
-if [ $? = 0 ]
+if [ "$?" = "0" ]
 then
     echo -n "Você acabou de assistir: "
     echo "$episodio." | tr -d '/' | tr '-' ' ' | sed 's/\<./\U&/g'
