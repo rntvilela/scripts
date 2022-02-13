@@ -10,7 +10,7 @@ usage() {
 }
 
 case $1 in
-    -s) nohup slock > /dev/null & 
+    -s) nohup slock > /dev/null 2>&1 & 
         systemctl suspend ;;
     -r) sudo systemctl reboot ;;
     -p) sudo systemctl poweroff ;;
