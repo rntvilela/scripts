@@ -5,8 +5,8 @@ browser='firefox'
 usage() {
     echo "usage: ./animecli.sh [option]"
     echo ""
-    echo " -n to give a anem to search. Ex: ./animecli.sh 'death note'"
-    echo " -l to give a list of animes names to search. Ex: ./animecli.sh -l animes.txt"
+    echo " -n to give a name to search. Ex: ./animecli.sh 'death note'"
+    echo " -l to give a list of animes to search. Ex: ./animecli.sh -l animes.txt"
     echo " -h to show this menu."
 }
 
