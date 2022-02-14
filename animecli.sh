@@ -1,12 +1,13 @@
 #!/bin/sh
 
-browser='firefox'
+browser="firefox"
+animelist="$HOME/.config/animecli/animelist"
 
 usage() {
     echo "usage: ./animecli.sh [option]"
     echo ""
     echo " -n to give a name to search. Ex: ./animecli.sh 'death note'"
-    echo " -l to give a list of animes to search. Ex: ./animecli.sh -l animes.txt"
+    echo " -l to search from list ($animelist)"
     echo " -h to show this menu."
 }
 
@@ -21,18 +22,20 @@ get_ep() {
         then
             echo -n "Você acabou de assistir: "
             echo "$episodio." | tr '-' ' ' | sed 's/\<./\U&/g'
+            exit
         else
             echo -n "Falha ao executar com mpv, abrindo: "
             echo -n "$episodio " | tr '-' ' ' | sed 's/\<./\U&/g'
             echo "com $browser."
-            $browser "https://animesonline.cc/episodio/$episodio/"
+            nohup $browser "https://animesonline.cc/episodio/$episodio/" >/dev/null 2>&1 &
+            exit
         fi
     fi
 }
 
 case $1 in 
     -n) [ -n "$2" ] && anime=$(echo "$2" | tr ' ' '+') && get_ep ;;
-    -l) [ -f "$2" ] && anime=$(dmenu -l 30 -p 'Pesquisar por:' < "$2") && get_ep ;;
+    -l) [ -f "$animelist" ] && anime=$(dmenu -l 30 -p 'Pesquisar por:' < "$animelist") && get_ep ;;
     *) usage ;;
 esac
 
