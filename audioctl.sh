@@ -13,19 +13,16 @@ usage() {
 
 case $1 in
     -u) amixer -q set Master 5%+ unmute
-        killall dunst
-        dunstify "$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print " "$5}')" 
-        mpv /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga >/dev/null 2>&1 ;;
+        dunstctl close-all
+        dunstify "$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print " "$5}')" ;; 
     -d) amixer -q set Master 5%- unmute 
         killall dunst
         audio=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5" "$6}')
-        [ "${audio% *}" = "0%" ] || [ "${audio#* }" = "off" ] && dunstify " ${audio% *}" || dunstify " ${audio% *}" 
-        mpv /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga >/dev/null 2>&1 ;;
+        [ "${audio% *}" = "0%" ] || [ "${audio#* }" = "off" ] && dunstify " ${audio% *}" || dunstify " ${audio% *}" ;;
     -m) amixer -q set Master toggle
-        killall dunst
+        dunstctl close-all
         arg=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $6}')
-        [ "$arg" = "on" ] && dunstify " "|| dunstify " "
-        mpv /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga >/dev/null 2>&1 ;;
+        [ "$arg" = "on" ] && dunstify " "|| dunstify " " ;;
     -p) pulsemixer ;;
      *) usage ;;
 esac
