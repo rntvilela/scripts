@@ -1,6 +1,5 @@
 #!/bin/sh
 
-browser="firefox"
 animelist="$HOME/.config/animecli/animelist"
 
 usage() {
@@ -17,7 +16,7 @@ get_ep() {
     
     episodio=$(echo "$episodioslist" | awk '{print $1}' | dmenu -l 30 -p 'Episódios:') 
 
-    [ -n "$episodio" ] && url="$(echo "$episodioslist" | sed -n $episodio'p' | awk '{print $2}')"
+    [ -n "$episodio" ] && url="$(echo "$episodioslist" | sed -n "$episodio"'p' | awk '{print $2}')"
     [ -n "$url" ] && mpv "$url" && echo -n "Você acabou de assistir: " && echo -n "$anime_escolhido" | tr '-' ' ' | sed 's/\<./\U&/g' && echo " - Episódio $episodio" && exit
 }
 
