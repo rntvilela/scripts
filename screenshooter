@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {    
-    echo "usage: ./screenshooter.sh [option]"
+    echo "usage: ./screenshooter [option]"
     echo ""
     echo " -w capture full window."
     echo " -a select capture area."
@@ -10,9 +10,9 @@ usage() {
 }
 
 case $1 in
-    -w) import -window root "/home/renato/Imagens/screenshots/Screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
+    -w) import -window root "$HOME/Imagens/screenshots/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
         dunstify "Image save in Imagens/screenshots" ;;
-    -a) import "/home/renato/Imagens/screenshots/Screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
+    -a) import "$HOME/Imagens/screenshots/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
         dunstify "Image save in Imagens/screenshots" ;;
      *) usage ;;
 esac
