@@ -10,19 +10,25 @@ usage() {
     echo " -h to show this menu."
 }
 
-get_ep() {
+get_name() {
     [ -n "$anime" ] && anime_escolhido=$(curl -s "https://goyabu.com/?s=$anime" | grep -Eo "https:\/\/goyabu.com\/assistir\/[a-zA-Z0-9-]*/" | cut -c28- | tr -d '/' | dmenu -l 30 -p 'Resultados:') || exit
-    [ -n "$anime_escolhido" ] && episodioslist=$(curl -s "https://goyabu.com/assistir/$anime_escolhido/" | grep -Eo "https:\/\/goyabu.com\/videos\/[a-zA-Z0-9-]*/" | nl) || exit
-    
+    if [ -n "$anime_escolhido" ]
+    then
+        [ -z "$(grep -ix "$anime_escolhido" "$animelist")" ] && echo "$anime_escolhido" | tr '-' ' ' | sed 's/\<./\U&/g' >> "$animelist"
+        episodioslist=$(curl -s "https://goyabu.com/assistir/$anime_escolhido/" | grep -Eo "https:\/\/goyabu.com\/videos\/[a-zA-Z0-9-]*/" | nl) || exit
+    fi
+}
+
+get_ep() {
     episodio=$(echo "$episodioslist" | awk '{print $1}' | dmenu -l 30 -p 'Episódios:') 
 
-    [ -n "$episodio" ] && url="$(echo "$episodioslist" | sed -n "$episodio"'p' | awk '{print $2}')"
-    [ -n "$url" ] && mpv "$url" && echo -n "Você acabou de assistir: " && echo -n "$anime_escolhido" | tr '-' ' ' | sed 's/\<./\U&/g' && echo " - Episódio $episodio" && exit
+    [ -n "$episodio" ] && url="$(echo "$episodioslist" | sed -n "$episodio"'p' | awk '{print $2}')" || exit
+    [ -n "$url" ] && echo "Abrindo episódio. Aguarde..." && mpv "$url" && echo -n "Você acabou de assistir: " && echo -n "$anime_escolhido" | tr '-' ' ' | sed 's/\<./\U&/g' && echo " - Episódio $episodio" && echo "Continue assistindo. Abrindo lista de episódios." && get_ep || exit 
 }
 
 case $1 in 
-    -n) [ -n "$2" ] && anime=$(echo "$2" | tr ' ' '+') && get_ep ;;
-    -l) [ -f "$animelist" ] && anime=$(dmenu -l 30 -p 'Pesquisar por:' < "$animelist") && get_ep ;;
+    -n) [ -n "$2" ] && anime=$(echo "$2" | tr ' ' '+') && get_name && get_ep ;;
+    -l) [ -f "$animelist" ] && anime=$(sort < "$animelist" | dmenu -l 30 -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep ;;
     *) usage ;;
 esac
 
