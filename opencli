@@ -18,7 +18,12 @@ dirlist="$HOME/.config/opencli/dirlist"
 arg="$1"
 [ "$arg" = "-h" ] && usage && exit
 
-[ -z "$2" ] && dir="$(sort < "$dirlist" | dmenu -l -15 -p 'Diretório:')" || dir="$2"
+if [ "$arg" = "-g" ]
+then
+    [ -z "$2" ] && dir="$(sort < "$dirlist" | dmenu -l -15 -p 'Diretório:')" || dir="$2"
+else
+    dir="."
+fi
 
 if [ -n "$dir" ]
 then 
