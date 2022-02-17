@@ -11,7 +11,7 @@ usage() {
 
 pdfreader='zathura'
 video='mpv'
-editor='st -e vim'
+editor='st vim'
 files='1 - pdf\n2 - vídeo\n3 - texto'
 dirlist="$HOME/.config/opencli/dirlist"
 
@@ -20,9 +20,9 @@ arg="$1"
 
 if [ "$arg" = "-g" ]
 then
-    [ -z "$2" ] && dir="$(sort < "$dirlist" | dmenu -l -15 -p 'Diretório:')" || dir="$2"
+    [ -z "$2" ] && dir="$(sort < "$dirlist" | dmenu -l -30 -p 'Diretório:')" || dir="$2"
 else
-    dir="."
+    dir="$(pwd)"
 fi
 
 if [ -n "$dir" ]
@@ -31,12 +31,12 @@ then
     [ "$arg" = "-g" ] && arg="$(echo "$files" | dmenu -l 10 -p 'Abrir:' | cut -c 3,5)"
 
     case "$arg" in
-        -p) file="$(ls "$dir"/*pdf 2>/dev/null | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $pdfreader "$file" >/dev/null 2>&1 & ;;
-        -v) file="$(ls "$dir"/*mkv "$dir"/*mp4 "$dir"/*avi 2>/dev/null | dmenu -l 30 -p "Abrir:")"
-            [ -n "$file" ] && nohup $video "$file" >/dev/null 2>&1 & ;;
-        -t) file="$(file "$dir"/* | grep 'UTF-8 Unicode text' | cut -d':' -f1 | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && $editor "$file" ;;
+        -p) file="$(ls "$dir" | grep -E 'pdf' | dmenu -l 30 -p 'Abrir:')"
+            [ -n "$file" ] && nohup $pdfreader "$dir""/""$file" >/dev/null 2>&1 & ;;
+        -v) file="$(ls "$dir" | grep -E 'mkv|mp4|avi' | dmenu -l 30 -p "Abrir:")"
+            [ -n "$file" ] && nohup $video "$dir""/""$file" >/dev/null 2>&1 & ;;
+        -t) file="$(ls "$dir" | grep -E 'txt|md' | dmenu -l 30 -p 'Abrir:')"
+            [ -n "$file" ] && nohup $editor "$dir""/""$file" >/dev/null 2>&1 & ;;
         *) usage ;;
     esac
 fi
