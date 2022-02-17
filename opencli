@@ -33,7 +33,7 @@ then
     case "$arg" in
         -p) file="$(ls "$dir" | grep -E 'pdf' | dmenu -l 30 -p 'Abrir:')"
             [ -n "$file" ] && nohup $pdfreader "$dir""/""$file" >/dev/null 2>&1 & ;;
-        -v) file="$(ls "$dir" | grep -E 'mkv|mp4|avi' | dmenu -l 30 -p "Abrir:")"
+        -v) file="$(ls "$dir" | grep -E 'mkv|mp4|avi' | dmenu -l 30 -p 'Abrir:')"
             [ -n "$file" ] && nohup $video "$dir""/""$file" >/dev/null 2>&1 & ;;
         -t) file="$(ls "$dir" | grep -E 'txt|md' | dmenu -l 30 -p 'Abrir:')"
             [ -n "$file" ] && nohup $editor "$dir""/""$file" >/dev/null 2>&1 & ;;
