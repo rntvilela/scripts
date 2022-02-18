@@ -6,37 +6,45 @@ usage() {
     echo " -p to pdf file."
     echo " -v to video file."
     echo " -t to text file."
+    echo " -i to image file."
     echo " -h to show this menu."
 }
 
 pdfreader='zathura'
 video='mpv'
 editor='st vim'
-files='1 - pdf\n2 - vídeo\n3 - texto'
+image='sxiv'
+files='1 - pdf\n2 - video\n3 - texto\n4 - image'
 dirlist="$HOME/.config/opencli/dirlist"
+
+list="$(sort < "$dirlist" | uniq)"
+
+echo "$list" > "$dirlist"
 
 arg="$1"
 [ "$arg" = "-h" ] && usage && exit
 
 if [ "$arg" = "-g" ]
 then
-    [ -z "$2" ] && dir="$(sort < "$dirlist" | dmenu -l -30 -p 'Diretório:')" || dir="$2"
+    [ -z "$2" ] && dir="$(dmenu -l -30 -p 'Diretório:' < "$dirlist")" || dir="$2"
 else
     dir="$(pwd)"
 fi
 
 if [ -n "$dir" ]
-then 
+then
     [ -z "$(grep -ix "$dir" "$dirlist")" ] && echo "$dir" >> "$dirlist"
     [ "$arg" = "-g" ] && arg="$(echo "$files" | dmenu -l 10 -p 'Abrir:' | cut -c 3,5)"
 
     case "$arg" in
-        -p) file="$(ls "$dir" | grep -E 'pdf' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $pdfreader "$dir""/""$file" >/dev/null 2>&1 & ;;
-        -v) file="$(ls "$dir" | grep -E 'mkv|mp4|avi' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $video "$dir""/""$file" >/dev/null 2>&1 & ;;
-        -t) file="$(ls "$dir" | grep -E 'txt|md' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $editor "$dir""/""$file" >/dev/null 2>&1 & ;;
+        -p) file="$(ls $dir | grep -E 'pdf' | dmenu -l 30 -p 'Abrir:')"
+            [ -z "$file" ] && nohup $pdfreader $dir"/""$file" >/dev/null 2>&1 & ;;
+        -v) file="$(ls $dir | grep -E 'mkv|mp4|avi' | dmenu -l 30 -p 'Abrir:')"
+            [ -n "$file" ] && nohup $video $dir"/""$file" >/dev/null 2>&1 & ;;
+        -t) file="$(ls $dir | grep -E 'txt|md' | dmenu -l 30 -p 'Abrir:')"
+            [ -n "$file" ] && nohup $editor $dir"/""$file" >/dev/null 2>&1 & ;;
+        -i) file="$(ls $dir | grep -E 'png|jpg|jpeg|gif' | dmenu -l 30 -p 'Abrir:')"
+            [ -n "$file" ] && nohup $image $dir"/""$file" >/dev/null 2>&1 & ;;
         *) usage ;;
     esac
 fi
