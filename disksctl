@@ -1,0 +1,24 @@
+#!/bin/sh
+
+usage() {    
+    echo "usage: ./disksctl"
+    echo ""
+    echo " -h to show this menu."
+}
+
+block()
+{
+    device="$(lsblk -l | grep -v NAME | dmenu -l 10 | awk '{print $1}')"
+    [ -n "$device" ] && notify="$(udisksctl "$cmd" -b "/dev/""$device")" && dunstify "$notify"
+}
+
+[ "$1" = "-h" ] && usage && exit
+
+arg="$(echo "Montar\nDesmontar" | dmenu -l -2 -p 'Ação:')"
+
+case "$arg" in
+    "Montar") cmd="mount"
+        block ;;
+    "Desmontar") cmd="unmount"
+        block ;;
+esac
