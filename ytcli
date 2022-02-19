@@ -1,0 +1,66 @@
+#!/bin/bash
+
+sublist="$HOME/.config/yt/sublist"
+
+if [ "$1" = "-c" ] 
+then
+    [ -f "$sublist" ] && query=$(sort < "$sublist" | dmenu -l 30 -p 'Pesquisar por:' | tr ' ' '+')
+    response=$(curl -s "https://www.youtube.com/c/$query/videos" |\
+      sed "s/{\"gridVideoRenderer/\n\n&/g" |\
+      sed "s/}]}}}]}}/&\n\n/g" |\
+      awk -v ORS="\n\n" '/gridVideoRenderer/')
+
+    # if unable to fetch the youtube results page, inform and exit
+    if ! grep -q "gridVideoRenderer" <<< "$response"; then echo "unable to fetch yt"; exit 1; fi
+
+    # regex expression to match video entries from yt channel page
+    # get the list of videos and their ids to ids
+    ids=$(awk -F '[""]' '{print $6 "\t" $50;}' <<< "$response" | grep "^\S")
+
+    # url prefix for videos
+    videolink="https://youtu.be/"
+
+    choice=$(echo -e "$ids" | cut -d'	' -f2 | dmenu -l -30 -p 'Assistir:') # dont show id
+    [ -z "$choice" ] && exit	# if esc-ed then exit
+    id=$(echo -e "$ids" | grep -Fwm1 "$choice" | cut -d'	' -f1) # get id of choice
+    dunstify "ytcli" "Abrindo:\n $choice. \nAguarde..." && mpv "$videolink$id"
+else
+    # if in search show query result vids
+    query="$(printf '' | dmenu -p 'Pesquisar por:' | tr ' ' '+')"
+
+    [ -z "$query" ] && exit
+    response="$(curl -s "https://www.youtube.com/results?search_query=$query" |\
+      sed 's|\\.||g')"
+    # if unable to fetch the youtube results page, inform and exit
+    if ! grep -q "script" <<< "$response"; then echo "unable to fetch yt"; exit 1; fi
+    # regex expression to match video and playlist entries from yt result page
+    vgrep='"videoRenderer":{"videoId":"\K.{11}".+?"text":".+?[^\\](?=")'
+    pgrep='"playlistRenderer":{"playlistId":"\K.{34}?","title":{"simpleText":".+?[^\"](?=")'
+    # grep the id and title
+    # return them in format id (type) title
+    getresults() {
+        grep -oP "$1" <<< "$response" |\
+          awk -F\" -v p="$2" '{ print $1 "\t" p " " $NF}'
+    }
+    # get the list of videos/playlists and their ids in videoids and playlistids
+    videoids=$(getresults "$vgrep")
+    playlistids=$(getresults "$pgrep" "(playlist)")
+    # if there are playlists or videos, append them to list
+    [ -n "$playlistids" ] && ids="$playlistids\n"
+    [ -n "$videoids" ] && ids="$ids$videoids"
+    # url prefix for videos and playlists
+    videolink="https://youtu.be/"
+    playlink="https://youtube.com/playlist?list="
+    # prompt the results to user infinitely until they exit (escape)
+    choice=$(echo -e "$ids" | cut -d'	' -f2 | dmenu -l 30 -p 'Assistir:') # dont show id
+    [ -z "$choice" ] && exit	# if esc-ed then exit
+    id=$(echo -e "$ids" | grep -Fwm1 "$choice" | cut -d'	' -f1) # get id of choice
+    dunstify "ytcli" "Abrindo:\n $choice. \nAguarde..."
+    case $id in
+        # 11 digit id = video
+        ???????????) mpv "$playlink$id" ;;
+        # 34 digit id = playlist
+        ??????????????????????????????????) mpv "$playlink$id" ;;
+        *) exit ;;
+    esac
+fi
