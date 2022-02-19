@@ -1,7 +1,7 @@
 #!/bin/sh
 
 update_cpu(){
-    cpu=$(top -bn2 | grep '%Cpu' | tail -1 | awk '{print "CPU  " 100-$8 "%"}')
+    cpu=$(top -bn1 | grep '%Cpu' | awk '{print "CPU  " 100-$8 "%"}')
 }
 
 update_ram(){
@@ -33,15 +33,14 @@ update_status(){
 }
 
 s=0
-update_audio && update_brightness && update_ram && update_clock && update_battery && update_status
-update_cpu && update_status
+update_clock && update_battery
 
 while true; do
-    sleep 1
-    s=$((s+=1))
-    
     update_audio && update_brightness
-    [ $((s%15)) = 0 ] && update_cpu && update_ram
+    [ $((s%10)) = 0 ] && update_cpu && update_ram
     [ $s = 60 ] && update_clock && update_battery && s=0
-    update_status    
+    update_status   
+
+    sleep 1
+    s=$((s+=1)) 
 done
