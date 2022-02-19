@@ -9,10 +9,13 @@ usage() {
  
 }
 
+screen() {
+    import $cmd "$HOME/Imagens/screenshots/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
+    dunstify "screenshooter" "Image save in $HOME/Imagens/screenshots" 
+}
+
 case $1 in
-    -w) import -window root "$HOME/Imagens/screenshots/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
-        dunstify "Image save in Imagens/screenshots" ;;
-    -a) import "$HOME/Imagens/screenshots/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").png"
-        dunstify "Image save in Imagens/screenshots" ;;
-     *) usage ;;
+    -w) cmd="-window root" && screen ;;
+    -a) cmd="" && screen ;;
+    *) usage ;;
 esac

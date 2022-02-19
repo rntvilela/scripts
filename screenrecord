@@ -8,10 +8,14 @@ usage() {
     echo " -h to show this menu."
 }
 
+screen()
+{
+    ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+0,0 $cmd "$HOME/Vídeos/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").mkv" 
+    dunstify "screenrecord" "Video save in $HOME/Vídeos"
+}
+
 case $1 in
-    -v) ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+0,0 "$HOME/Vídeos/screen-record_$(date +"%d-%m-%Y_%H-%M-%S").mkv" 
-        dunstify "Video save in Vídeos" ;;
-    -a) ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0+0,0 -f pulse -ac 2 -i default "$HOME/Vídeos/screen-record-audio_$(date +"%d-%m-%Y_%H-%M-%S").mkv"        
-        dunstify "Video save in Vídeos" ;;
+    -v) screen ;;
+    -a) cmd="-f pulse -ac 2 -i default" && screen ;;
     *) usage ;;
 esac

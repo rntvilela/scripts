@@ -9,12 +9,15 @@ usage() {
  
 }
 
+bright()
+{
+    brightnessctl -q set $value
+    dunstctl close-all
+    dunstify "brightctl" "$(awk '{print " " int($1*100/7) "%"}' < /sys/class/backlight/acpi_video0/brightness)" 
+}
+
 case $1 in
-    -u) brightnessctl -q set +1
-        dunstctl close-all
-        dunstify "brightctl" "$(awk '{print " " int($1*100/7) "%"}' < /sys/class/backlight/acpi_video0/brightness)" ;;
-    -d) brightnessctl -q set 1-
-        dunstctl close-all
-        dunstify "brightctl" "$(awk '{print " " int($1*100/7) "%"}' < /sys/class/backlight/acpi_video0/brightness)" ;;
-     *) usage ;;
+    -u) value="+1" && bright ;;
+    -d) value="1-" && bright ;;
+    *) usage ;;
 esac
