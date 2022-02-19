@@ -21,7 +21,7 @@ get_ep() {
 
 if [ "$1" = "-l" ]
 then
-    [ -f "$animelist" ] && anime=$(sort < "$animelist" | dmenu -l 30 -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep
+    [ -f "$animelist" ] && anime=$(sort < "$animelist" | dmenu -l 30 -i -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep
 else
     anime=$(printf '' | dmenu -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep
 fi
