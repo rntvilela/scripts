@@ -6,17 +6,21 @@ usage() {
     echo " -c to calcule expression"
     echo " -d to get date"
     echo " -f to get fortune"
+    echo " -s to say something"
     echo " -w to get weather"
 
 }
 
-cmd="cowsay -f tux"
+notify()
+{
+    dunstify "$(cowsay -f tux "$msg")" 
+}
 
 case $1 in
-    -c) $cmd "$(echo "$2 = " && echo "scale=2; $2" | bc -l)" ;;
-    -d) $cmd "$(date +'%a, %d %b %y, %H:%M')" ;;
-    -f) $cmd "$(fortune)" ;;
-    -w) $cmd "$(curl -Ss 'https://wttr.in/?Q&T' | cut -c16- | head -2 | xargs)" ;;
+    -c) msg=$(echo "$2 = " && echo "scale=2; $2" | bc -l) && notify ;; 
+    -f) msg=$(fortune) && notify ;;
+    -s) msg=$2 && notify ;;
+    -w) msg=$(curl -Ss 'https://wttr.in/?0&Q&T' | cut -c16- | head -2 | xargs) && notify ;;
     *) usage ;;
 esac
 
