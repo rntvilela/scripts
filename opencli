@@ -1,12 +1,13 @@
 #!/bin/sh
 
 usage() {
-    echo "usage: ./opencli [option] [directory]"
-    echo ""
+    echo "usage: ./$0 [option] [directory]"
+    echo 
     echo " -p to pdf file."
     echo " -v to video file."
     echo " -t to text file."
     echo " -i to image file."
+    echo " -a to audio file."
     echo " -h to show this menu."
 }
 
@@ -14,7 +15,8 @@ pdfreader='zathura'
 video='mpv'
 editor='st vim'
 image='sxiv'
-files='1 - pdf\n2 - video\n3 - texto\n4 - image'
+audio='st mpv'
+files='1 - pdf\n2 - video\n3 - texto\n4 - image\n5 - audio'
 dirlist="$HOME/.config/opencli/dirlist"
 
 list="$(sort < "$dirlist" | uniq)"
@@ -28,7 +30,7 @@ if [ "$arg" = "-g" ]
 then
     [ -z "$2" ] && dir="$(dmenu -l -30 -p 'Diretório:' < "$dirlist")" || dir="$2"
 else
-    dir="$(pwd)"
+    [ -n "$2" ] && dir="$2" || dir="$(pwd)"
 fi
 
 if [ -n "$dir" ]
@@ -38,13 +40,15 @@ then
 
     case "$arg" in
         -p) file="$(ls $dir | grep -E 'pdf' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $pdfreader $dir"/""$file" >/dev/null 2>&1 & ;;
+            [ -n "$file" ] && $pdfreader $dir"/""$file" ;;
         -v) file="$(ls $dir | grep -E 'mkv|mp4|avi' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $video $dir"/""$file" >/dev/null 2>&1 & ;;
+            [ -n "$file" ] && $video $dir"/""$file" ;;
         -t) file="$(ls $dir | grep -E 'txt|md' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $editor $dir"/""$file" >/dev/null 2>&1 & ;;
+            [ -n "$file" ] && $editor $dir"/""$file" ;;
         -i) file="$(ls $dir | grep -E 'png|jpg|jpeg|gif' | dmenu -l 30 -p 'Abrir:')"
-            [ -n "$file" ] && nohup $image $dir"/""$file" >/dev/null 2>&1 & ;;
+            [ -n "$file" ] && $image $dir"/""$file" ;;
+        -a) file="$(ls $dir | grep -E 'mp3|oga' | dmenu -l 30 -p 'Abrir:')"
+            [ -n "$file" ] && $audio $dir"/""$file" ;;
         *) usage ;;
     esac
 fi
