@@ -3,6 +3,7 @@
 case "$1" in
     *\.c) out="$(echo "$1" | cut -d'.' -f1)" 
         gcc -o "$out" "$1" && "./""$out" ;;
+    *\.py) python3 "$1" ;;
     *\.md) out="$(echo "$1" | cut -d'.' -f1)"".pdf" 
         pandoc -o "$out" "$1" && zathura "$out" ;;
 esac

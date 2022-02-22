@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# fork from: https://github.com/sayan01/scripts/blob/master/yt 
+
 sublist="$HOME/.config/yt/sublist"
 
 if [ "$1" = "-c" ] 
 then
-    [ -f "$sublist" ] && query=$(sort < "$sublist" | dmenu -l 30 -p 'Pesquisar por:' | tr ' ' '+')
+    [ -f "$sublist" ] && query=$(sort < "$sublist" | dmenu -l 30 -i -p 'Pesquisar por:' | tr ' ' '+')
     response=$(curl -s "https://www.youtube.com/c/$query/videos" |\
       sed "s/{\"gridVideoRenderer/\n\n&/g" |\
       sed "s/}]}}}]}}/&\n\n/g" |\
