@@ -1,8 +1,8 @@
 #!/bin/sh
 
 usage() {
-    echo "usage: ./tux [option]"
-    echo ""
+    echo "usage: ./$0 [option]"
+    echo 
     echo " -c to calcule expression"
     echo " -d to get date"
     echo " -f to get fortune"
@@ -11,16 +11,16 @@ usage() {
 
 }
 
-notify()
+responde()
 {
-    dunstify "$(cowsay -f tux "$msg")" 
+    echo "$(cowsay -f tux "$msg")" 
 }
 
 case $1 in
-    -c) msg=$(echo "$2 = " && echo "scale=2; $2" | bc -l) && notify ;; 
-    -f) msg=$(fortune) && notify ;;
-    -s) msg=$2 && notify ;;
-    -w) msg=$(curl -Ss 'https://wttr.in/?0&Q&T' | cut -c16- | head -2 | xargs) && notify ;;
+    -c) msg=$(echo "$2 = " && echo "scale=2; $2" | bc -l) && responde ;; 
+    -f) msg=$(fortune) && responde ;;
+    -s) msg=$2 && responde ;;
+    -w) msg=$(curl -Ss 'https://wttr.in/?0&Q&T' | cut -c16- | head -2 | xargs) && responde ;;
     *) usage ;;
 esac
 
