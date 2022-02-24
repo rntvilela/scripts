@@ -8,7 +8,7 @@ block()
 
 [ "$1" = "-h" ] && usage && exit
 
-arg="$(echo "Montar\nDesmontar" | dmenu -l -2 -p 'Ação:')"
+arg="$(echo "Montar\nDesmontar" | dmenu -l -2 -i -p 'Ação:')"
 
 case "$arg" in
     "Montar") cmd="mount"

@@ -16,7 +16,11 @@ video='mpv'
 editor='st vim'
 image='sxiv'
 audio='st mpv'
-files='1 - pdf\n2 - video\n3 - texto\n4 - image\n5 - audio'
+files='1 - pdf
+2 - video
+3 - texto
+4 - image
+5 - audio'
 dirlist="$HOME/.config/opencli/dirlist"
 
 list="$(sort < "$dirlist" | uniq)"
@@ -36,7 +40,7 @@ fi
 if [ -n "$dir" ]
 then
     [ -z "$(grep -ix "$dir" "$dirlist")" ] && echo "$dir" >> "$dirlist"
-    [ "$arg" = "-g" ] && arg="$(echo "$files" | dmenu -l 10 -p 'Abrir:' | cut -c 3,5)"
+    [ "$arg" = "-g" ] && arg="$(echo "$files" | dmenu -l 10 -i -p 'Abrir:' | cut -c 3,5)"
 
     case "$arg" in
         -p) file="$(ls $dir | grep -E 'pdf' | dmenu -l 30 -p 'Abrir:')"
