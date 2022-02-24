@@ -11,7 +11,10 @@ usage() {
     echo " -h to show this menu."
 }
 
-options='1 - lock\n2 - suspend\n3 - reboot\n4 - poweroff'
+options='1 - lock
+2 - suspend
+3 - reboot
+4 - poweroff'
 
 arg="$1" 
 [ "$arg" = "-h" ] && usage && exit
