@@ -6,4 +6,5 @@ case "$1" in
     *\.py) python3 "$1" ;;
     *\.md) out="$(echo "$1" | cut -d'.' -f1)"".pdf" 
         pandoc -o "$out" "$1" && zathura "$out" ;;
+    *) [ "$(head -1 < "$1")" = "#!/bin/sh" ] && "./""$1" ;;
 esac
