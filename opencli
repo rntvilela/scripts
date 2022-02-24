@@ -18,7 +18,7 @@ image='sxiv'
 audio='st mpv'
 files='1 - pdf
 2 - video
-3 - texto
+3 - text
 4 - image
 5 - audio'
 dirlist="$HOME/.config/opencli/dirlist"
