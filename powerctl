@@ -2,7 +2,7 @@
 
 usage() {    
     echo "usage: ./powerclt [option]"
-    echo ""
+    echo 
     echo " -g graphic mode."
     echo " -l to lock screen."
     echo " -s to suspend."
