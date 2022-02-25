@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$1" == "-h" ]
+then
+    echo "Uppercase em lowercase"
+    echo "usage: ./upertolower"
+else
+    for arq in *[A-Z]*
+    do
+        if [ -f "${arq,,}" ] 
+        then
+            echo "${arq,,} já existe"
+        else
+            aux=${arq,,}
+            mv -f "$arq" "tmp" && mv -f "tmp" "$aux"
+        fi
+    done
+fi
