@@ -2,18 +2,17 @@
 
 usage() {    
     echo "usage: ./brightctl [option]"
-    echo ""
+    echo
     echo " -u to increase brightness."
     echo " -d to decrease brightness."
     echo " -h to show this menu."
- 
 }
 
 bright()
 {
-    brightnessctl -q set $value
+    brightnessctl -q set "$value"
     dunstctl close-all
-    dunstify "brightctl" "$(awk '{print " " int($1*100/7) "%"}' < /sys/class/backlight/acpi_video0/brightness)" 
+    dunstify "brightctl" "$(awk '{print "", int($1*100/7) "%"}' < /sys/class/backlight/acpi_video0/brightness)" 
 }
 
 case $1 in

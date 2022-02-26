@@ -1,23 +1,22 @@
 #!/bin/sh
 
 usage() {    
-    echo "usage: ./audioctl.sh [option]"
-    echo ""
+    echo "usage: ./audioctl [option]"
+    echo 
     echo " -u to increase audio %5."
     echo " -d to decrease audio %5."
     echo " -m to mute audio."
     echo " -p to open pulsemixer"
     echo " -h to show this menu."
- 
 }
 
 case $1 in
     -u) amixer -q set Master 5%+ unmute
         dunstctl close-all
-        dunstify "audioctl" "$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print " "$5}')" ;; 
+        dunstify "audioctl" "$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print "", $5}')" ;; 
     -d) amixer -q set Master 5%- unmute 
         killall dunst
-        audio=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5" "$6}')
+        audio=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5, $6}')
         [ "${audio% *}" = "0%" ] || [ "${audio#* }" = "off" ] && dunstify "audioctl" " ${audio% *}" || dunstify "audioctl" " ${audio% *}" ;;
     -m) amixer -q set Master toggle
         dunstctl close-all
