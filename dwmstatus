@@ -2,15 +2,7 @@
 
 update_sound()
 {
-    sound=$(pacmd list-sink-inputs)
-
-    if [ "$sound" = "0 sink input(s) available." ]
-    then
-        sound=""
-    else
-        sound=$(echo "$sound" | grep media.name | tail -1 | cut -d"=" -f2 | tr '"' '\0' | cut -c -30)
-        sound="$sound"" |"
-    fi
+    sound=$(pacmd list-sink-inputs | grep media.name | tail -1 | cut -d"=" -f2 | tr '"' '\0' | cut -c -30)
 }
 
 update_cpu()
@@ -49,7 +41,7 @@ update_clock()
 
 update_status()
 {
-    xsetroot -name "$sound $cpu | $ram | $audio | $brightness | $battery | $clock"
+    xsetroot -name "$sound | $cpu | $ram | $audio | $brightness | $battery | $clock"
 }
 
 s=0
