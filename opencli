@@ -32,9 +32,9 @@ arg="$1"
 
 if [ "$arg" = "-g" ]
 then
-    [ -z "$2" ] && dir="$(dmenu -l -30 -p 'Diretório:' < "$dirlist")" || dir="$2"
+  [ -z "$2" ] && dir="$(dmenu -l -30 -p 'Diretório:' < "$dirlist")" || dir="$(cd "$2" && pwd)"
 else
-    [ -n "$2" ] && dir="$2" || dir="$(pwd)"
+  [ -n "$2" ] && dir="$(cd "$2" && pwd)" || dir="$(pwd)"
 fi
 
 if [ -n "$dir" ]
