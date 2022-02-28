@@ -41,7 +41,7 @@ update_clock()
 
 update_status()
 {
-    xsetroot -name "$sound | $cpu | $ram | $audio | $brightness | $battery | $clock"
+    xsetroot -name "$sound  $cpu  $ram  $audio  $brightness  $battery  $clock"
 }
 
 s=0
