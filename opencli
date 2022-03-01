@@ -50,7 +50,7 @@ then
     -t) file="$(ls $dir | grep -E 'txt|md' | dmenu -l 30 -p 'Abrir:')"
       [ -n "$file" ] && $editor $dir"/""$file" ;;
     -i) file="$(ls $dir | grep -E 'png|jpg|jpeg|gif' | dmenu -l 30 -p 'Abrir:')"
-      [ -n "$file" ] && $image $dir"/"$file" ;;
+      [ -n "$file" ] && $image $dir"/""$file" ;;
     -a) file="$(ls $dir | grep -E 'mp3|oga' | dmenu -l 30 -p 'Abrir:')"
       [ -n "$file" ] && $audio $dir"/""$file" ;;
     *) usage ;;
