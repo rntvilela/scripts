@@ -15,7 +15,7 @@ case $1 in
         dunstctl close-all
         dunstify "audioctl" "$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print "", $5}')" ;; 
     -d) amixer -q set Master 5%- unmute 
-        killall dunst
+        dunstctl close-all
         audio=$(amixer sget Master | awk '/Left:/ {gsub (/[\[\]]/,""); print $5, $6}')
         [ "${audio% *}" = "0%" ] || [ "${audio#* }" = "off" ] && dunstify "audioctl" " ${audio% *}" || dunstify "audioctl" " ${audio% *}" ;;
     -m) amixer -q set Master toggle

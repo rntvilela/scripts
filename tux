@@ -13,7 +13,7 @@ usage() {
 
 responde()
 {
-    echo "$(cowsay -f tux "$msg")" 
+    cowsay -f tux "$msg"
 }
 
 case $1 in

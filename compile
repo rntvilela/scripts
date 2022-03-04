@@ -1,10 +1,10 @@
 #!/bin/sh
 
 case "$1" in
-    *\.c) out="$(echo "$1" | cut -d'.' -f1)" 
-        gcc -o "$out" "$1" && "./""$out" ;;
+    *\.c) out=$(echo "$1" | cut -d'.' -f1)
+        gcc -o "$out" "$1" && "./$out" ;;
     *\.py) python3 "$1" ;;
-    *\.md) out="$(echo "$1" | cut -d'.' -f1)"".pdf" 
+    *\.md) out=$(echo "$1" | cut -d'.' -f1)".pdf" 
         pandoc -o "$out" "$1" && zathura "$out" ;;
-    *) [ "$(head -1 < "$1")" = "#!/bin/sh" ] && "./""$1" ;;
+    *) [ "$(head -1 < "$1")" = "#!/bin/sh" ] && "./$1" ;;
 esac

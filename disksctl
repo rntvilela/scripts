@@ -2,13 +2,13 @@
 
 block()
 {
-    device="$(lsblk -l | grep -v NAME | dmenu -l 10 | awk '{print $1}')"
-    [ -n "$device" ] && notify="$(udisksctl "$cmd" -b "/dev/""$device")" && dunstify "disksctl" "$notify"
+    device=$(lsblk -l | grep -v NAME | dmenu -l 10 | awk '{print $1}')
+    [ -n "$device" ] && notify=$(udisksctl "$cmd" -b "/dev/""$device") && dunstify "disksctl" "$notify"
 }
 
 [ "$1" = "-h" ] && usage && exit
 
-arg="$(echo "Montar\nDesmontar" | dmenu -l -2 -i -p 'Ação:')"
+arg=$(printf "Montar\nDesmontar" | dmenu -l -2 -i -p 'Ação:')
 
 case "$arg" in
     "Montar") cmd="mount"
