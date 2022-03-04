@@ -39,10 +39,7 @@ fi
 
 if [ -n "$dir" ]
 then
-    if ! grep -iq "$dir" "$dirlist"
-    then
-        echo "$dir" >> "$dirlist"
-    fi
+    ! grep -iq "$dir" "$dirlist" && echo "$dir" >> "$dirlist"
     [ "$arg" = "-g" ] && arg=$(echo "$files" | dmenu -l 10 -i -p 'Abrir:' | cut -c 3,5)
 
     case "$arg" in

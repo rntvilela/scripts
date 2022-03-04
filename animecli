@@ -7,10 +7,7 @@ get_name() {
     if [ -n "$anime_escolhido" ]
     then
         anime_name=$(echo "$anime_escolhido" | tr '-' ' ' | sed 's/\<./\U&/g')
-        if ! grep -qi "$anime_name" "$animelist" 
-        then
-            echo "$anime_name" >> "$animelist"
-        fi
+        ! grep -qi "$anime_name" "$animelist" && echo "$anime_name" >> "$animelist"
         episodioslist=$(curl -s "https://goyabu.com/assistir/$anime_escolhido/" | grep -Eo "https:\/\/goyabu.com\/videos\/[a-zA-Z0-9-]*/" | nl) || exit
     fi
 }
