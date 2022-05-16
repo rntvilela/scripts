@@ -37,7 +37,7 @@ update_clock && update_battery
 
 while true 
 do
-    update_audio && update_brightness
+    update_audio && update_brightness && update_sound
     [ $((s%10)) = 0 ] && update_cpu && update_ram
     [ $s = 60 ] && update_clock && update_battery && s=0
     update_status   
