@@ -43,16 +43,16 @@ then
     [ "$arg" = "-g" ] && arg=$(echo "$files" | dmenu -l 10 -i -p 'Abrir:' | cut -c 3,5)
 
     case "$arg" in
-        -p) file=$(ls "$dir" | grep '\.pdf' | dmenu -l 30 -p 'Abrir:')
-            [ -n "$file" ] && $pdfreader "$dir""/$file" ;;
-        -v) file=$(ls "$dir" | grep -E '\.(mkv|mp4|avi)' | dmenu -l 30 -i -p 'Abrir:')
-            [ -n "$file" ] && $video "$dir""/$file" ;;
-        -t) file=$(ls "$dir" | grep -E '\.(txt|md)' | dmenu -l 30 -i -p 'Abrir:')
-            [ -n "$file" ] && $editor "$dir""/$file" ;;
-        -i) file=$(ls "$dir" | grep -E '\.(png|jpg|jpeg|gif)' | dmenu -l 30 -i -p 'Abrir:')
-            [ -n "$file" ] && $image "$dir""/$file" ;;
-        -a) file=$(ls "$dir" | grep -E '\.(mp3|oga)' | dmenu -l 30 -i -p 'Abrir:')
-            [ -n "$file" ] && $audio "$dir""/$file" ;;
+        -p) file=$(ls $dir | grep '\.pdf' | dmenu -l 30 -p 'Abrir:')
+            [ -n "$file" ] && $pdfreader $dir"/$file" ;;
+        -v) file=$(ls $dir | grep -E '\.(mkv|mp4|avi)' | dmenu -l 30 -i -p 'Abrir:')
+            [ -n "$file" ] && $video $dir"/$file" ;;
+        -t) file=$(ls $dir | grep -E '\.(txt|md)' | dmenu -l 30 -i -p 'Abrir:')
+            [ -n "$file" ] && $editor $dir"/$file" ;;
+        -i) file=$(ls $dir | grep -E '\.(png|jpg|jpeg|gif)' | dmenu -l 30 -i -p 'Abrir:')
+            [ -n "$file" ] && $image $dir"/$file" ;;
+        -a) file=$(ls $dir | grep -E '\.(mp3|oga)' | dmenu -l 30 -i -p 'Abrir:')
+            [ -n "$file" ] && $audio $dir"/$file" ;;
         *) usage ;;
     esac
 fi
