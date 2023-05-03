@@ -1,38 +1,8 @@
 #!/bin/sh
 
-usage() {    
-    echo "usage: ./powerclt [option]"
-    echo 
-    echo " -g graphic mode."
-    echo " -l to lock screen."
-    echo " -s to suspend."
-    echo " -r to reboot."
-    echo " -p to poweroff."
-    echo " -h to show this menu."
-}
-
-options='1 - lock
-2 - suspend
-3 - reboot
-4 - poweroff'
-
-arg="$1" 
-[ "$arg" = "-h" ] && usage && exit
-
-if [ "$arg" = "-g" ]
-then
-    arg=$(echo "$options" | dmenu -l 10 -p "Ação:" | cut -c 3,5)
-
-    [ -n "$arg" ] && cancel=$(printf "Sim\nNão" | dmenu -l -2 -p "Continuar?") || exit
-
-    [ "$cancel" = "Não" ] && exit
-fi
-
-case "$arg" in
+case $1 in
     -l) slock ;;
-    -s) nohup slock > /dev/null 2>&1 & 
-        systemctl suspend ;;
+    -s) nohup slock > /dev/null 2>&1 & systemctl suspend ;;
     -r) sudo systemctl reboot ;;
     -p) sudo systemctl poweroff ;;
-    *) usage ;;
 esac
