@@ -19,7 +19,7 @@ update_audio() {
 }
 
 update_battery() {
-    battery=$(acpi | awk '{gsub (",",""); print $3, $4}')
+    battery=$(acpi | awk '{gsub (",|Not",""); print $3, $4}')
 
     [ "${battery% *}" = "Discharging" ] && battery=" ${battery#* }" || battery=" ${battery#* }"
 }

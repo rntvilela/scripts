@@ -1,22 +1,23 @@
 #!/bin/sh
 
+anime_site="https://animesonlinecc.to"
 animelist="$HOME/.config/animecli/animelist"
 
 get_name() {
-    [ -n "$anime" ] && anime_escolhido=$(curl -s "https://goyabu.com/?s=$anime" | grep -Eo "https:\/\/goyabu.com\/assistir\/[a-zA-Z0-9-]*/" | cut -c28- | tr -d '/' | dmenu -l 30 -p 'Resultados:') || exit
+    [ -n "$anime" ] && anime_escolhido=$(curl -s "$anime_site/search/$anime" | grep -Eo "https:\/\/animesonlinecc.to\/anime\/[a-zA-Z0-9-]*/" | cut -c33- | uniq | dmenu -l 30 -p 'Resultados:') || exit
     if [ -n "$anime_escolhido" ]
-    then
-        anime_name=$(echo "$anime_escolhido" | tr '-' ' ' | sed 's/\<./\U&/g')
+	then
+        anime_name=$(echo "$anime_escolhido" | tr -d '/' | tr '-' ' ' | sed 's/\<./\U&/g')
         ! grep -qi "$anime_name" "$animelist" && echo "$anime_name" >> "$animelist"
-        episodioslist=$(curl -s "https://goyabu.com/assistir/$anime_escolhido/" | grep -Eo "https:\/\/goyabu.com\/videos\/[a-zA-Z0-9-]*/" | nl) || exit
+        episodioslist=$(curl -s "$anime_site/anime/$anime_escolhido" | grep -Eo "https:\/\/animesonlinecc.to\/episodio\/[a-zA-Z0-9-]*/" | cut -c36- | tr -d '/' | uniq) || exit
     fi
 }
 
 get_ep() {
-    episodio=$(echo "$episodioslist" | awk '{print $1}' | dmenu -l 30 -p 'Episódios:') 
-
-    [ -n "$episodio" ] && url=$(echo "$episodioslist" | sed -n "$episodio"'p' | awk '{print $2}') || exit
-    [ -n "$url" ] && dunstify "animecli" "Abrindo:\n $anime_name - Episódio $episodio \nAguarde..." && mpv "$url" && get_ep || exit 
+    episodio=$(echo "$episodioslist" | dmenu -l 30 -p 'Episódios:') 
+    [ -n "$episodio" ] && url="$anime_site/episodio/$episodio" || exit
+	echo "$url"
+    [ -n "$url" ] && mpv "$url" && get_ep || exit 
 }
 
 if [ "$1" = "-l" ]
