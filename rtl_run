@@ -6,5 +6,9 @@ iverilog "$files" && vvp "./a.out" || exit
 
 dump_file="./dump.vcd"
 
-[ -f "$dump_file" ] && gtkwave $dump_file || exit
-
+if [ "$1" = "-g" ]
+then
+	[ -f "$dump_file" ] && gtkwave $dump_file || exit
+else
+	exit
+fi
