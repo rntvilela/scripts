@@ -1,0 +1,10 @@
+#!/bin/sh
+
+files="$(ls *v)"
+
+iverilog "$files" && vvp "./a.out" || exit
+
+dump_file="./dump.vcd"
+
+[ -f "$dump_file" ] && gtkwave $dump_file || exit
+
