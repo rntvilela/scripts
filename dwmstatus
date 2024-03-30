@@ -1,7 +1,7 @@
 #!/bin/sh
 
 update_cpu() {
-    cpu=$(top -bn1 | grep '%Cpu' | awk '{print "CPU ", 100-$8 "%"}')
+    cpu=$(top -bn1 | grep '%CPU' | head -1 | awk -F ',' '{print "CPU ", 100-$7 "%"}')
 }
 
 update_ram() {
