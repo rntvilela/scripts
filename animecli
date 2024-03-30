@@ -1,7 +1,14 @@
 #!/bin/sh
 
+list_dir="$HOME/.config/animecli"
 anime_site="https://animesonlinecc.to"
-animelist="$HOME/.config/animecli/animelist"
+
+if [ ! -d "$list_dir" ]
+then
+	mkdir "$list_dir" && touch "$list_dir/animelist"
+fi 
+
+animelist="$list_dir/animelist"
 
 get_name() {
     [ -n "$anime" ] && anime_escolhido=$(curl -s "$anime_site/search/$anime" | grep -Eo "https:\/\/animesonlinecc.to\/anime\/[a-zA-Z0-9-]*/" | cut -c33- | uniq | dmenu -l 30 -p 'Resultados:') || exit
@@ -22,7 +29,7 @@ get_ep() {
 
 if [ "$1" = "-l" ]
 then
-    [ -f "$animelist" ] && anime=$(sort < "$animelist" | dmenu -l 30 -i -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep
+    anime=$(sort < "$animelist" | dmenu -l 30 -i -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep
 else
     anime=$(printf '' | dmenu -p 'Pesquisar por:' | tr ' ' '+') && get_name && get_ep
 fi
