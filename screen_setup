@@ -1,0 +1,9 @@
+#!/bin/sh
+
+case $1 in
+	-er) xrandr --output eDP --auto --output HDMI-A-0 --auto --right-of eDP ;;
+	-el) xrandr --output eDP --auto --output HDMI-A-0 --auto --left-of eDP ;;
+    -po) xrandr --output eDP --auto --output HDMI-A-0 --off ;;
+	-so) xrandr --output eDP --off --output HDMI-A-0 --auto ;;
+	-dp) xrandr --output eDP --auto --output HDMI-A-0 --auto --same-as eDP ;;
+esac
