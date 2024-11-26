@@ -1,0 +1,5 @@
+#!/bin/sh
+
+pactl set-default-sink $1
+
+
