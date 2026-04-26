@@ -1,7 +1,0 @@
-#!/bin/sh
-
-case $1 in
-    -u) amixer -q set Master 5%+ unmute ;;
-    -d) amixer -q set Master 5%- unmute ;;
-    -m) amixer -q set Master toggle ;;
-esac

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-case $1 in
-    -l) slock ;;
-    -s) nohup slock > /dev/null 2>&1 & systemctl suspend ;;
-    -r) sudo systemctl reboot ;;
-    -p) sudo systemctl poweroff ;;
-esac

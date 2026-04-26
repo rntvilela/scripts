@@ -1,6 +1,0 @@
-#!/bin/sh
-
-case $1 in
-    -u) light -A 20 ;;
-    -d) light -U 20 ;;
-esac
