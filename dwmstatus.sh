@@ -29,7 +29,8 @@ update_clock() {
 }
 
 update_temp() {
-	temp=$(awk '{printf " %.1f°C\n", $1/1000}' /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon4/temp1_input)
+    hwmon=$(grep -l "^k10temp$" /sys/class/hwmon/hwmon*/name | sed 's|/name||')
+    temp=$(awk '{printf " %.1f°C\n", $1/1000}' "$hwmon/temp1_input")
 }
 
 update_status() {
